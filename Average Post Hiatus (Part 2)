@@ -1,0 +1,26 @@
+You are given a table of Facebook posts from users who posted at least twice in 2021. Write a query to find the average number of days (with decimals) between each user’s posts during 2021.
+
+Output the user and the average number of the days they waited between posts.
+
+Assumptions:
+
+    A single user can post several times per day.
+    When calculating differences between dates, output the component of the time interval representing days.
+        Example output: 5.5 days
+
+
+with cte AS
+(
+SELECT user_id,
+max(post_date) last_date,
+min(post_date) first_date,
+count(post_id) total_post
+FROM posts
+where EXTRACT(year from post_date)=2021
+GROUP BY user_id
+)
+SELECT 
+user_id,
+ROUND((EXTRACT(DAY FROM (last_date - first_date)) / (total_post-1)),1) AS days_between
+from cte
+where total_post != 1;
