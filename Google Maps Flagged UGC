@@ -1,0 +1,22 @@
+As a Data Analyst on the Google Maps User Generated Content team, you and your Product Manager are investigating user-generated content (UGC)– photos and reviews that independent users upload to Google Maps.
+
+Write a query to determine which type of place (place_category) attracts the most UGC tagged as "off-topic". In the case of a tie, show the output in ascending order of place_category.
+
+Assumptions:
+
+    Some places may not have any tags.
+    Each UGC upload with the "off-topic" tag will be counted separately.
+
+----------------------------------------------
+
+select place_category as off_topic_places
+from
+(
+SELECT place_id, count(place_id) 
+FROM maps_ugc_review
+where content_tag='Off-topic'
+group by place_id
+order by 2 desc limit 2
+)t JOIN place_info p
+on p.place_id = t.place_id
+order by 1;
