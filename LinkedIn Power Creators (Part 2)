@@ -1,0 +1,21 @@
+The LinkedIn Creator team is looking for power creators who use their personal profile as a company or influencer page. If someone's LinkedIn page has more followers than the company they work for, we can safely assume that person is a power creator.
+
+Write a query to return the IDs of these LinkedIn power creators in alphabetical order.
+
+Assumption:
+
+    A person can work at multiple companies.
+
+
+--------------------------------------
+
+
+SELECT e.personal_profile_id
+FROM personal_profiles as p
+  Join employee_company as e   
+    On p.profile_id = e.personal_profile_id
+  Join company_pages as c  
+    On e.company_id = c.company_id
+Group by e.personal_profile_id
+having max(p.followers) > max(c.followers)
+order by e.personal_profile_id;
