@@ -1,0 +1,16 @@
+Given a table of bank deposits and withdrawals, return the final balance for each account.
+
+Assumption:
+
+    All the transactions performed for each account are present in the table; no transactions are missing.
+
+
+--------------------------------------------------
+
+
+SELECT 
+account_id,
+sum(case when transaction_type='Deposit' then amount ELSE
+-amount end) as final_balance
+FROM transactions
+group by 1;
