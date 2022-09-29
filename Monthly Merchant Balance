@@ -1,0 +1,24 @@
+Say you have access to all the transactions for a given merchant account. Write a query to print the cumulative balance of the merchant account at the end of each day, with the total balance reset back to zero at the end of the month. Output the transaction date and cumulative balance.
+
+
+-------------------------------------------------
+
+
+with cte as
+(
+select date_trunc('month', transaction_date) as trans_mon,
+date_trunc('day', transaction_date) as trans_date,
+SUM(
+  case when type='deposit' then amount
+  else -amount
+  end
+) as amount
+from transactions
+group by 1,2
+order by trans_date
+)
+select trans_date as transaction_date,
+sum(amount) over(partition by trans_mon order by trans_date)as balance
+from cte;
+
+
