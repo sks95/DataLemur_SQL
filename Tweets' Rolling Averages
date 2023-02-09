@@ -14,8 +14,7 @@ known as a moving average, running average, moving mean, or rolling mean.
 --------------------------------------------------
 SELECT USER_ID, TWEET_DATE,
 ROUND(
-AVG(
-COUNT(TWEET_ID))
+AVG(COUNT(TWEET_ID))
     OVER(PARTITION BY USER_ID 
     ORDER BY USER_ID, TWEET_DATE 
     ROWS BETWEEN 2 PRECEDING AND CURRENT ROW),2)
